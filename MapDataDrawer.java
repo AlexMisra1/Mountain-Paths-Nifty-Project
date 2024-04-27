@@ -5,7 +5,7 @@ import java.awt.*;
 public class MapDataDrawer
 {
 
-	private int[][] grid;
+	public int[][] grid;
 
 	public MapDataDrawer(String filename, int rows, int cols){
 		// initialize grid 
@@ -50,13 +50,8 @@ public class MapDataDrawer
 	 */
 	public int findMinValue(){
 		int min = Integer.MAX_VALUE;
-		int count = 0;
 		for (int r = 0; r < grid.length; r++) {
 			for (int c = 0; c < grid[0].length; c++) {
-				count++;
-				if (count == 403201) {
-					return min;
-				}
 				if (grid[r][c] < min) {
 					min = grid[r][c];
 				}
@@ -70,13 +65,8 @@ public class MapDataDrawer
 	 */
 	public int findMaxValue(){
 		int max = Integer.MIN_VALUE;
-		int count = 0;
 		for (int r = 0; r < grid.length; r++) {
 			for (int c = 0; c < grid[0].length; c++) {
-				count++;
-				if (count == 403201) {
-					return max;
-				}
 				if (grid[r][c] > max) {
 					max = grid[r][c];
 				}
@@ -92,8 +82,13 @@ public class MapDataDrawer
 	 * @return the index of the row with the lowest value in the given col for the grid
 	 */
 	public  int indexOfMinInCol(int col){
-
-		return -1;
+		int minIndex = 0;
+		for (int r = 1; r < 476; r++) {
+			if (grid[r][col] < grid[minIndex][col]) {
+				minIndex = r;
+			}
+		}
+		return minIndex;
 	}
 
 	/**
@@ -128,7 +123,48 @@ public class MapDataDrawer
 	 * @return the total change in elevation traveled from West-to-East
 	 */
 	public int drawLowestElevPath(Graphics g, int row){
-		return -1;
+		int changeInElev = 0;
+		int r = row;
+		g.setColor(new Color(255, 0, 0));
+		for (int c = 0; c < grid[0].length - 1; c++) {
+			
+			g.fillRect(c, r, 1, 1);
+			
+			if (r + 1 > grid.length) {
+						
+				
+			}
+			else if (r - 1 < 0) {
+				
+			}
+			else {
+				int change1 = Math.abs(grid[r][c] - grid[r][c + 1]);
+				int change2 = Math.abs(grid[r][c] - grid[r + 1][c + 1]);
+				int change3 = Math.abs(grid[r][c] - grid[r - 1][c + 1]);
+				
+				if (change2 == change3 && change2 < change1) {
+					double randomNum = Math.random();
+					if (randomNum < 0.5) {
+						row++;
+					}
+					else {
+						row--;
+					}
+				}
+				
+				else if (change2 < change1 && change2 < change3) {
+					r++;
+				}
+				else if (change3 < change1 && change3 < change2) {
+					r--;
+				}
+			}
+			
+		}
+		g.fillRect(grid[0].length - 1, r, 1, 1);
+		
+		return changeInElev;
+		
 	}
 
 	/**

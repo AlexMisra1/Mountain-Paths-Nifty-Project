@@ -4,13 +4,15 @@ public class Driver
 {
     
     public static void main(String[] args){
+    	
+ 
         
         //construct DrawingPanel, and get its Graphics context
-        DrawingPanel panel = new DrawingPanel(844, 480);
+        DrawingPanel panel = new DrawingPanel(840, 480);
         Graphics g = panel.getGraphics();
         
         //Test Step 1 - construct mountain map data
-        MapDataDrawer map = new MapDataDrawer("Colorado_844x480.dat", 480, 844);
+        MapDataDrawer map = new MapDataDrawer("Colorado_844x480.dat", 480, 840);
         
         //Test Step 2 - min, max, minRow in col
         int min = map.findMinValue();
