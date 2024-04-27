@@ -61,7 +61,7 @@ public class MapDataDrawer
 					min = grid[r][c];
 				}
 			}
-		}
+		} 
 		//with the grid that we're using, this will never be reached
 		return min;
 	}
@@ -101,8 +101,23 @@ public class MapDataDrawer
 	 * Colors should be grayscale values 0-255, scaled based on min/max values in grid
 	 */
 	public void drawMap(Graphics g){
-
-
+		
+		int maxValue = findMaxValue();
+		int minValue = findMinValue();
+		double scale = 255.0 / (maxValue - minValue);
+		
+		int count = 0;
+		for (int r = 0; r < grid.length; r++) {
+			for (int c = 0; c < grid[0].length; c++) {
+				count++;
+				if (count == 403201) {
+					return;
+				}
+				int color = (int) ((grid[r][c] - minValue) * scale);
+				g.setColor(new Color(color, color, color));
+				g.fillRect(c, r, 1, 1);
+			}
+		}
 
 
 	}
