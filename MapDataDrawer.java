@@ -117,59 +117,37 @@ public class MapDataDrawer
 	 * Choose a foward step out of 3 possible forward locations, using greedy method described in assignment.
 	 * @return the total change in elevation traveled from West-to-East
 	 */
-	public int drawLowestElevPath(Graphics g, int row){
-		int r = row;
-		int initElev = grid[r][0];
-		for (int c = 0; c < grid[0].length - 1; c++) {
-			
-			g.fillRect(c, r, 1, 1);
-			
-			if (r + 1 > grid.length - 1) {
-				int change1 = Math.abs(grid[r][c] - grid[r][c + 1]);
-				int change3 = Math.abs(grid[r][c] - grid[r - 1][c + 1]);
-				
-				if (change3 < change1) {
-					row--;
-				}
-				
-			}
-			else if (r - 1 < 0) {
-				int change1 = Math.abs(grid[r][c] - grid[r][c + 1]);
-				int change2 = Math.abs(grid[r][c] - grid[r + 1][c + 1]);
-				
-				if (change2 < change1) {
-					row++;
-				}
-			}
-			else {
-				int change1 = Math.abs(grid[r][c] - grid[r][c + 1]);
-				int change2 = Math.abs(grid[r][c] - grid[r + 1][c + 1]);
-				int change3 = Math.abs(grid[r][c] - grid[r - 1][c + 1]);
-				
-				if (change2 == change3 && change2 < change1) {
-					double randomNum = Math.random();
-					if (randomNum < 0.5) {
-						row++;
-					}
-					else {
-						row--;
-					}
-				}
-				
-				else if (change2 < change1 && change2 < change3) {
-					r++;
-				}
-				else if (change3 < change1 && change3 < change2) {
-					r--;
-				}
-			}
-			
-		}
-		g.fillRect(grid[0].length - 1, r, 1, 1);
-		int finalElev = grid[r][grid[0].length - 1];
 		
-		return Math.abs(finalElev - initElev);
-		
+	public int drawLowestElevPath(Graphics g, int row) {
+	    int r = row;
+	    int initElev = grid[r][0];
+	    Random random = new Random();
+
+	    for (int c = 0; c < grid[0].length - 1; c++) {
+	        g.fillRect(c, r, 1, 1);
+
+	        //first time using ternary operators. They're kind of nice. Easier to read.
+	        int change1 = Math.abs(grid[r][c] - grid[r][c + 1]);
+	        int change2 = (r + 1 < grid.length) ? Math.abs(grid[r][c] - grid[r + 1][c + 1]) : Integer.MAX_VALUE;
+	        int change3 = (r - 1 >= 0) ? Math.abs(grid[r][c] - grid[r - 1][c + 1]) : Integer.MAX_VALUE;
+
+	        if (change2 == change3 && change2 < change1) {
+	            if (random.nextBoolean()) {
+	                r++;
+	            } else {
+	                r--;
+	            }
+	        } else if (change2 < change1 && change2 < change3) {
+	            r++;
+	        } else if (change3 < change1 && change3 < change2) {
+	            r--;
+	        }
+	    }
+
+	    g.fillRect(grid[0].length - 1, r, 1, 1);
+	    int finalElev = grid[r][grid[0].length - 1];
+
+	    return Math.abs(finalElev - initElev);
 	}
 
 	/**

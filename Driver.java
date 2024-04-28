@@ -27,9 +27,10 @@ public class Driver
         //Test Step 3 - draw the map
         map.drawMap(g);
         
+        
         //Test Step 4 - draw a greedy path
         g.setColor(Color.RED); //can set the color of the 'brush' before drawing, then method doesn't need to worry about it
-        int totalChange = map.drawLowestElevPath(g, 475); //use minRow from Step 2 as starting point
+        int totalChange = map.drawLowestElevPath(g, minRow); //use minRow from Step 2 as starting point
         System.out.println("Lowest-Elevation-Change Path starting at row "+minRow+" gives total change of: "+totalChange);
         
         
