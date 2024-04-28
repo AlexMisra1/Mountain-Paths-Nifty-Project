@@ -101,13 +101,8 @@ public class MapDataDrawer
 		int minValue = findMinValue();
 		double scale = 255.0 / (maxValue - minValue);
 		
-		int count = 0;
 		for (int r = 0; r < grid.length; r++) {
 			for (int c = 0; c < grid[0].length; c++) {
-				count++;
-				if (count == 403201) {
-					return;
-				}
 				int color = (int) ((grid[r][c] - minValue) * scale);
 				g.setColor(new Color(color, color, color));
 				g.fillRect(c, r, 1, 1);
@@ -123,19 +118,28 @@ public class MapDataDrawer
 	 * @return the total change in elevation traveled from West-to-East
 	 */
 	public int drawLowestElevPath(Graphics g, int row){
-		int changeInElev = 0;
 		int r = row;
-		g.setColor(new Color(255, 0, 0));
+		int initElev = grid[r][0];
 		for (int c = 0; c < grid[0].length - 1; c++) {
 			
 			g.fillRect(c, r, 1, 1);
 			
-			if (r + 1 > grid.length) {
-						
+			if (r + 1 > grid.length - 1) {
+				int change1 = Math.abs(grid[r][c] - grid[r][c + 1]);
+				int change3 = Math.abs(grid[r][c] - grid[r - 1][c + 1]);
+				
+				if (change3 < change1) {
+					row--;
+				}
 				
 			}
 			else if (r - 1 < 0) {
+				int change1 = Math.abs(grid[r][c] - grid[r][c + 1]);
+				int change2 = Math.abs(grid[r][c] - grid[r + 1][c + 1]);
 				
+				if (change2 < change1) {
+					row++;
+				}
 			}
 			else {
 				int change1 = Math.abs(grid[r][c] - grid[r][c + 1]);
@@ -162,8 +166,9 @@ public class MapDataDrawer
 			
 		}
 		g.fillRect(grid[0].length - 1, r, 1, 1);
+		int finalElev = grid[r][grid[0].length - 1];
 		
-		return changeInElev;
+		return Math.abs(finalElev - initElev);
 		
 	}
 
@@ -171,7 +176,13 @@ public class MapDataDrawer
 	 * @return the index of the starting row for the lowest-elevation-change path in the entire grid.
 	 */
 	public int indexOfLowestElevPath(Graphics g){
-		return -1;
+		int minIndex = 0;
+		for (int r = 1; r < grid.length; r++) {
+			if (drawLowestElevPath(g, r) < drawLowestElevPath(g, minIndex)) {
+				minIndex = r;
+			}
+		}
+		return minIndex;
 
 	}
 
