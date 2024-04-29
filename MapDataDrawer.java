@@ -57,7 +57,6 @@ public class MapDataDrawer
 				}
 			}
 		} 
-		//with the grid that we're using, this will never be reached
 		return min;
 	}
 	/**
@@ -72,7 +71,6 @@ public class MapDataDrawer
 				}
 			}
 		}
-		//with the grid that we're using, this will never be reached
 		return max;
 	}
 
